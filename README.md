@@ -181,6 +181,30 @@ icad tx intertx submit [path/to/msg.json] --connection-id connection-0 --from $W
 icad q bank balances $ICA_ADDR --chain-id test-2 --node tcp://localhost:26657
 ```
 
+- **Example 3:** ibc token transfer using ica 
+# Run below command to send ibc token transfer message to test-2 chain. 
+# test-2 chain will do ibc transfer from ica account on chain test-2 to a test-1 chain account configured in test-data/ica-msg/ibc-transfer.json
+# NOTE - Make sure to change the sender account in test-data/ica-msg/ibc-transfer.json to your newly generated ICA account. 
+```
+icad tx intertx submit test-data/ica-msg/ibc-transfer.json  --connection-id connection-0 --from $WALLET_1 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y
+```
+```
+icad q bank balances $ICA_ADDR --chain-id test-2 --node tcp://localhost:26657
+icad q bank balances $WALLET_1  --chain-id test-1 --node tcp://localhost:16657
+```
+# Expected output of $WALLET_1 in chain test-1 will be similar to , you will see an ibc hex hash denom
+
+balances:
+- amount: "200"
+  denom: ibc/C053D637CCA2A2BA030E2C5EE1B28A16F71CCB0E45E8BE52766DC1B241B77878
+- amount: "100000000000"
+  denom: stake
+pagination:
+  next_key: null
+  total: "0"
+
+
+ 
 #### Testing timeout scenario
 
 1. Stop the relayer process and send an interchain accounts transaction using one of the examples provided above.

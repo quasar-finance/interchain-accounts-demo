@@ -1,0 +1,16 @@
+{
+  "@type": "/ibc.applications.transfer.v1.MsgTransfer",
+  "source_port": "transfer",
+  "source_channel": "channel-0",
+  "token": {
+    "denom": "stake",
+    "amount": "100"
+  },
+  "sender": "cosmos1j9684wx9lz3g2t2ev25yjtuc48e5pcypg7gwzpyreytrwh55l8dqnpjfxw",
+  "receiver": "cosmos1m9l358xunhhwds0568za49mzhvuxx9uxre5tud",
+  "timeout_height": {
+    "revision_number": "0",
+    "revision_height": "0"
+  },
+  "timeout_timestamp": "1677839404000000000"
+}

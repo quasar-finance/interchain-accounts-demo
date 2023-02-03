@@ -128,6 +128,15 @@ init-hermes: kill-dev install
 	./network/hermes/restore-keys.sh
 	./network/hermes/create-conn.sh
 
+init-hermes-debug: kill-dev
+	@echo "Initializing both blockchains..."
+	./network/init.sh
+	./network/start.sh
+	@echo "Initializing relayer..."
+	./network/hermes/restore-keys.sh
+	./network/hermes/create-conn.sh
+
+
 init-golang-rly: kill-dev install
 	@echo "Initializing both blockchains..."
 	./network/init.sh
