@@ -44,7 +44,7 @@ make install
 make init-hermes
 
 # go relayer
-make init-golang-relayer
+make init-golang-rly
 ```
 
 :warning: **NOTE:** When you want to use both relayers interchangeably, using both of these `make` commands will set up two seperate connections (which is not needed and can lead to confusion). In the case of using both relayers, perform:
@@ -182,11 +182,31 @@ icad q bank balances $ICA_ADDR --chain-id test-2 --node tcp://localhost:26657
 ```
 
 - **Example 3:** ibc token transfer using ica 
-# Run below command to send ibc token transfer message to test-2 chain. 
-# test-2 chain will do ibc transfer from ica account on chain test-2 to a test-1 chain account configured in test-data/ica-msg/ibc-transfer.json
-# NOTE - Make sure to change the sender account in test-data/ica-msg/ibc-transfer.json to your newly generated ICA account. 
+### Run below command to send ibc token transfer message to test-2 chain. 
+### test-2 chain will do ibc transfer from ica account on chain test-2 to a test-1 chain account configured in test-data/ica-msg/ibc-transfer.json
+### NOTE - Make sure to change the sender account in test-data/ica-msg/ibc-transfer.json to your newly generated ICA account. 
+
+### First establish the transfer channel if using ( go relayer )
+```
+rly transact channel test1-test2 --src-port transfer --dst-port transfer --order unordered --version ics20-1 --home data/relayer/ 
+
+```
 ```
 icad tx intertx submit test-data/ica-msg/ibc-transfer.json  --connection-id connection-0 --from $WALLET_1 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y
+```
+
+### Check if the packet is stuck ; Ideally it should not happen. B
+### NOTE - In my case it is happening. 
+```bash
+ rly q unrelayed-packets test1-test2 channel-0 --home data/relayer/ 
+```
+
+- Output -
+{"src":null,"dst":[1]} 
+
+### Relay the unstuck packet if any 
+```bash
+rly tx relay-packets test1-test2 channel-0 --home ./data/relayer/
 ```
 ```
 icad q bank balances $ICA_ADDR --chain-id test-2 --node tcp://localhost:26657
